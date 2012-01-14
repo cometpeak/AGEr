@@ -2,10 +2,6 @@ package org.gersteinlab.age;
 
 public class AliFragment {
 	
-	public class AliCount {
-		
-	}
-	
 	private AliFragment _next;
 	private AliFragment _prev;
 	private String _ali1;
@@ -14,6 +10,9 @@ public class AliFragment {
 	private int _start2;
 	private int _end1;
 	private int _end2;
+	
+	public static final int WIDTH = 60;
+	public static final int MARGIN = 9;
 	
 	public AliFragment(String ali1, String ali2, 
 	                   int start1, int start2, 
@@ -79,8 +78,88 @@ public class AliFragment {
 		return _end2;
 	}
 	
-	public void countAligned()
+	public AliCount countAligned()
 	{
+		AliCount count = new AliCount(0, 0, 0);
+		int len = _ali1.length();
 		
+		if (_ali2.length() < len)
+			len = _ali2.length();
+		
+		for (int i = 0; i < len; i++) {
+			count.nAli++;
+			if (Sequence.sameNuc(_ali1.charAt(i), _ali2.charAt(i)) != false)
+				count.nId++;
+			if (Sequence.isGap(_ali1.charAt(i)) || Sequence.isGap(_ali2.charAt(i)))
+				count.nGap++;
+		}
+		
+		return count;
+	}
+	
+	public void printAlignment()
+	{
+		int inc1 = 1;
+		int inc2 = 1;
+		
+		if (_end1 < _start1)
+			inc1 = -1;
+		if (_end2 < _start2)
+			inc2 = -1;
+		
+		String margin = "";
+		for (int i = 0; i <= MARGIN; i++)
+			margin += " ";
+		
+		int n = _ali1.length();
+		if (_ali2.length() < n)
+			n = _ali2.length();
+		int ind1 = _start1;
+		int ind2 = _start2;
+		for (int i = 0; i < n; i += WIDTH) {
+			int st1 = ind1;
+			int st2 = ind2;
+			String a1 = _ali1.substring(i, WIDTH);
+			String a2 = _ali2.substring(i, WIDTH);
+			int nuc1 = 0;
+			int nuc2 = 0;
+			String match = "";
+			for (int j = 0; j < a1.length(); j++) {
+				if (Sequence.sameNuc(a1.charAt(j), a2.charAt(j)))
+					match += "|";
+				else if (!Sequence.isGap(a1.charAt(j)) && !Sequence.isGap(a2.charAt(j)))
+					match += ".";
+				else
+					match += " ";
+				
+				if (!Sequence.isGap(a1.charAt(j))) {
+					nuc1++;
+					ind1 += inc1;
+				}
+				if (!Sequence.isGap(a2.charAt(j))) {
+					nuc2++;
+					ind2 += inc2;
+				}
+			}
+			
+			System.out.println();
+			
+			if (nuc1 > 0) {
+				
+				System.out.print(Util.addw(MARGIN, st1) + " " + a1);
+				System.out.println(" " + (ind1 - inc1));
+			} else {
+				System.out.println(margin + a1);
+			}
+			
+			System.out.println(margin + match);
+			
+			if (nuc2 > 0) {
+				System.out.print(Util.addw(MARGIN, st2) + " " + a2);
+				System.out.println(" " + (ind2 - inc2));
+			} else {
+				System.out.println(margin + a2);
+			}
+		}
 	}
 }
