@@ -44,7 +44,7 @@ public class Scorer {
 	
 	public short getMismatch()
 	{
-		return  _mismatch;
+		return _mismatch;
 	}
 	
 	public short getMatch()

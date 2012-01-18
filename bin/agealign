@@ -1,0 +1,18 @@
+#!/bin/sh
+
+AGE_VERSION='0.0.1'
+
+AGE_HOME_DIR=`dirname "$0"`/..
+
+# JAVAFLAGS='-Xms512m -Xmx512m'
+
+if [ -n "${AGE_HOME:+x}" ]; then
+	AGE_HOME_DIR=$AGE_HOME
+fi
+
+if [ ! -d ${AGE_HOME_DIR}/dist ]; then
+	echo "AGE has not been built."
+	exit 1
+fi
+
+java ${JAVAFLAGS} -jar ${AGE_HOME_DIR}/dist/age-align-${AGE_VERSION}.jar "$@"

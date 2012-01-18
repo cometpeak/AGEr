@@ -30,16 +30,16 @@ public class Block {
 	
 	public String toString()
 	{
-		String ret = _desc;
+		StringBuffer ret = new StringBuffer(_desc);
 		if (ret.length() > 0)
-			ret = ret + " ";
+			ret.append(" ");
 		
-		ret = ret + "block\t";
-		ret = ret + Integer.toString(_start1) + "\t";
-		ret = ret + Integer.toString(_start2) + "\t";
-		ret = ret + Integer.toString(_length);
+		ret.append("block\t");
+		ret.append(_start1).append("\t");
+		ret.append(_start2).append("\t");
+		ret.append(_length);
 		
-		return ret;
+		return ret.toString();
 	}
 	
 	public Block next(Block b)

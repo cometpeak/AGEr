@@ -8,7 +8,7 @@ public class Util {
 	 * XXX Change to use StringBuilder. It would be more efficient that way. 
 	 * Even better, look into java.text.MessageFormat
 	 * 
-	 * @param s - string
+	 * @param str - string
 	 * @param n - field width
 	 * @return - input string padded with spaces
 	 */
@@ -22,6 +22,13 @@ public class Util {
 		return padding + str;
 	}
 	
+	/**
+	 * Overloaded addw used for ints
+	 * 
+	 * @param n
+	 * @param num
+	 * @return String containing integer padded with appropriate spaces
+	 */
 	public static String addw(int n, int num)
 	{
 		return Util.addw(n, Integer.toString(num));

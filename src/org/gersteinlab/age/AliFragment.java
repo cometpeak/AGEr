@@ -107,9 +107,9 @@ public class AliFragment {
 		if (_end2 < _start2)
 			inc2 = -1;
 		
-		String margin = "";
+		StringBuffer margin = new StringBuffer();
 		for (int i = 0; i <= MARGIN; i++)
-			margin += " ";
+			margin.append(" ");
 		
 		int n = _ali1.length();
 		if (_ali2.length() < n)
@@ -123,14 +123,14 @@ public class AliFragment {
 			String a2 = _ali2.substring(i, WIDTH);
 			int nuc1 = 0;
 			int nuc2 = 0;
-			String match = "";
+			StringBuffer match = new StringBuffer();
 			for (int j = 0; j < a1.length(); j++) {
 				if (Sequence.sameNuc(a1.charAt(j), a2.charAt(j)))
-					match += "|";
+					match.append("|");
 				else if (!Sequence.isGap(a1.charAt(j)) && !Sequence.isGap(a2.charAt(j)))
-					match += ".";
+					match.append(".");
 				else
-					match += " ";
+					match.append(" ");
 				
 				if (!Sequence.isGap(a1.charAt(j))) {
 					nuc1++;
@@ -145,20 +145,19 @@ public class AliFragment {
 			System.out.println();
 			
 			if (nuc1 > 0) {
-				
 				System.out.print(Util.addw(MARGIN, st1) + " " + a1);
 				System.out.println(" " + (ind1 - inc1));
 			} else {
-				System.out.println(margin + a1);
+				System.out.println(margin.toString() + a1);
 			}
 			
-			System.out.println(margin + match);
+			System.out.println(margin.toString() + match.toString());
 			
 			if (nuc2 > 0) {
 				System.out.print(Util.addw(MARGIN, st2) + " " + a2);
 				System.out.println(" " + (ind2 - inc2));
 			} else {
-				System.out.println(margin + a2);
+				System.out.println(margin.toString() + a2);
 			}
 		}
 	}

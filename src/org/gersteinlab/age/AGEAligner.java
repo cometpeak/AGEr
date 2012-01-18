@@ -136,10 +136,10 @@ public class AGEAligner {
 		_score_size = _score_n1 * _score_n2;
 		
 		// Scoring and trace matrices
-		_f_score = new int[(int) _score_size];
-		_r_score = new int[(int) _score_size];
-		_trace   = new short[(int) _score_size];
-		for (int i = 0; i < (int) _score_size; i++) {
+		_f_score = new int[_score_size];
+		_r_score = new int[_score_size];
+		_trace   = new short[_score_size];
+		for (int i = 0; i < _score_size; i++) {
 			_f_score[i] = 0;
 			_r_score[i] = 0;
 			_trace[i]   = 0;
@@ -147,13 +147,16 @@ public class AGEAligner {
 	}
 	
 	/**
+	 * Performs AGE alignment.
 	 * 
 	 * @param scr
 	 * @param flag
-	 * @return
+	 * @return true if successful, false if unsuccessful
 	 */
 	public boolean align(Scorer scr, int flag)
 	{
+		System.out.println("AGEAligner.align()");
+		
 		// Erase previous break points
 		_n_bpoints = 0;
 		
@@ -213,8 +216,9 @@ public class AGEAligner {
 	}
 	
 	/**
+	 * Gets the score of the alignment
 	 * 
-	 * @return
+	 * @return maximum score of main and auxiliary aligner
 	 */
 	public int score()
 	{
@@ -225,7 +229,7 @@ public class AGEAligner {
 	}
 	
 	/**
-	 * 
+	 * Prints alignment
 	 */
 	public void printAlignment()
 	{
@@ -381,6 +385,7 @@ public class AGEAligner {
 	}
 	
 	/**
+	 * Print excised. Called by printAlignment()
 	 * 
 	 * @param frags
 	 * @param inc1
@@ -1313,6 +1318,8 @@ public class AGEAligner {
 		int thread1_i2 = -100;
 		int thread2_i2 = -100;
 		
+		System.out.println("Beginning AGEAligner._calcMaxima()");
+		
 		// In the C++ version, this is the first OMP section. We're not going to
 		// do threads right now. I'm putting this section in the same block for
 		// now though we're doing this completely serially for now.
@@ -1426,6 +1433,8 @@ public class AGEAligner {
 			}
 			thread2_i2 = -100;
 		}
+		
+		System.out.println("End AGEAligner._calcMaxima()");
 	}
 	
 	/**
@@ -1436,6 +1445,8 @@ public class AGEAligner {
 	{
 		int thread1_i2 = -100;
 		int thread2_i2 = -100;
+		
+		System.out.println("Beginning AGEAligner._calcScores()");
 		
 		// XXX As with _calcMaxima, we have OMP sections. This is the first
 		// section. Just keep in it's own scope for now.
@@ -1586,5 +1597,7 @@ public class AGEAligner {
 			}
 			thread2_i2 = -100;
 		}
+		
+		System.out.println("End AGEAligner._calcScores()");
 	}
 }

@@ -2,6 +2,16 @@ package org.gersteinlab.age;
 
 import java.io.*;
 
+/**
+ * Class for representing a nucleotide sequence.
+ * 
+ * Allowed nucleotides are A, C, T, G, U, X, N in both lower and upper cases
+ * Other nucleotides (R, Y, M, K, S, W, B, D, H, V) are also allowed but 
+ * not scored
+ * 
+ * @author David Z. Chen, translated from Alexej Abyzov's C++ implementation
+ */
+
 public class Sequence {
 	private String _seq;
 	private String _name;
@@ -13,6 +23,8 @@ public class Sequence {
 	private Sequence _prev;
 	
 	/**
+	 * Class constructor. Creates an instance of Sequence with the nucleotide
+	 * sequence represented by input string.
 	 * 
 	 * @param seq
 	 */
@@ -43,6 +55,8 @@ public class Sequence {
 	}
 	
 	/**
+	 * Constructor for creating instance of Sequence from a file. File must be
+	 * in FASTA format.
 	 * 
 	 * @param file
 	 * @param start
@@ -126,6 +140,8 @@ public class Sequence {
 	}
 	
 	/**
+	 * Creates new Sequence object given strings for sequence, name, start
+	 * coordinate and whether to reverse.
 	 * 
 	 * @param seq
 	 * @param name
@@ -144,6 +160,7 @@ public class Sequence {
 	
 	/**
 	 * Clone method.
+	 * 
 	 * @return Sequence
 	 */
 	public Sequence clone()
@@ -162,6 +179,7 @@ public class Sequence {
 	
 	/**
 	 * Getter for sequence
+	 * 
 	 * @return sequence
 	 */
 	public String sequence()
@@ -171,6 +189,7 @@ public class Sequence {
 	
 	/**
 	 * Getter for start
+	 * 
 	 * @return start position for sequence
 	 */
 	public int start()
@@ -180,6 +199,7 @@ public class Sequence {
 	
 	/**
 	 * Getter for reverse flag
+	 * 
 	 * @return whether sequence has been reversed
 	 */
 	public boolean reverse()
@@ -189,6 +209,7 @@ public class Sequence {
 	
 	/**
 	 * Getter for next sequence
+	 * 
 	 * @return next Sequence
 	 */
 	public Sequence next()
@@ -198,6 +219,7 @@ public class Sequence {
 	
 	/**
 	 * Getter for previous Sequence
+	 * 
 	 * @return previous Sequence
 	 */
 	public Sequence prev()
@@ -207,27 +229,29 @@ public class Sequence {
 	
 	/**
 	 * Returns complement of given nucleotide
+	 * 
 	 * @param c
 	 * @return complement of c
 	 */
 	public static char complement(char c)
 	{
 		if      (c == 'a') return 't';
-		else if (c == 'c') return 'g';
-		else if (c == 't') return 'a';
-		else if (c == 'g') return 'c';
-		else if (c == 'A') return 'T';
-		else if (c == 'C') return 'G';
-		else if (c == 'T') return 'A';
-		else if (c == 'G') return 'C';
-		else if (c == 'u') return 'a';
-		else if (c == 'U') return 'A';
+	    else if (c == 'c') return 'g';
+	    else if (c == 't') return 'a';
+	    else if (c == 'g') return 'c';
+	    else if (c == 'A') return 'T';
+	    else if (c == 'C') return 'G';
+	    else if (c == 'T') return 'A';
+	    else if (c == 'G') return 'C';
+	    else if (c == 'u') return 'a';
+	    else if (c == 'U') return 'A';
 		
 		return c;
 	}
 	
 	/**
 	 * Checks if character is a nucleotide
+	 * 
 	 * @param c
 	 * @return true if nucleotide, false otherwise
 	 */
@@ -249,15 +273,16 @@ public class Sequence {
 			c == 'B' || c == 'b' ||
 			c == 'D' || c == 'd' ||
 			c == 'H' || c == 'h' ||
-			c == 'V' || c == 'v')
-			return true;
+			c == 'V' || c == 'v') 
+	    	return true;
 		
 		return false;
 	}
 	
 	/**
 	 * Character for gap
-	 * @return
+	 * 
+	 * @return character for gap
 	 */
 	public static char gap()
 	{
@@ -265,9 +290,10 @@ public class Sequence {
 	}
 	
 	/**
+	 * Returns true if character is a gap.
 	 * 
 	 * @param c
-	 * @return
+	 * @return true if character is a gap character
 	 */
 	public static boolean isGap(char c)
 	{
@@ -280,10 +306,11 @@ public class Sequence {
 	}
 	
 	/**
+	 * Returns true if two characters represent the same nucleotide
 	 * 
 	 * @param a
 	 * @param b
-	 * @return
+	 * @return true if same nucleotide
 	 */
 	public static boolean sameNuc(char a, char b)
 	{
@@ -309,19 +336,22 @@ public class Sequence {
 			_start += _seq.length() - 1;
 		
 		_reverse = !_reverse;
-		String ret = "";
+		//String ret = "";
+		StringBuffer ret = new StringBuffer();
 		for (int i = _seq.length() - 1; i >= 0; i--)
-			ret  = ret + complement(_seq.charAt(i));
+			ret.append(complement(_seq.charAt(i)));
+			//ret  = ret + complement(_seq.charAt(i));
 		
-		_seq = ret;
+		_seq = ret.toString();
 	}
 	
 	/**
 	 * Returns a sub-Sequence with the given start and end coordinates. Note 
 	 * that we are using 1-based coordinates
+	 * 
 	 * @param start
 	 * @param end
-	 * @return
+	 * @return Sequence representing the subsequence denoted by start and end
 	 */
 	public Sequence substr(int start, int end)
 	{
@@ -349,8 +379,9 @@ public class Sequence {
 	
 	/**
 	 * Add a sequence before the current sequence
+	 * 
 	 * @param newSequence
-	 * @return
+	 * @return true if successful, false if unsuccessful
 	 */
 	public boolean addBefore(Sequence newSequence)
 	{
@@ -391,8 +422,9 @@ public class Sequence {
 	/**
 	 * Adding atom after
 	 * XXX Examine the relationship between this and addBefore
-	 * @param sequence
-	 * @return
+	 * 
+	 * @param newSequence
+	 * @return true if successful, false if unsuccessful
 	 */
 	public boolean addAfter(Sequence newSequence)
 	{
@@ -436,6 +468,8 @@ public class Sequence {
 		Sequence last  = null;
 		BufferedReader in = null;
 		
+		System.out.println("Beginning Sequence.parseSequences(" + file + ")");
+		
 		try {
 			in = new BufferedReader(new FileReader(file));
 		} catch (IOException e) {
@@ -445,7 +479,7 @@ public class Sequence {
 		
 		String line;
 		String name = "";
-		String seq = "";
+		StringBuffer seq = new StringBuffer();
 		
 		while ((line = in.readLine()) != null) {
 			int n = line.length();
@@ -454,7 +488,7 @@ public class Sequence {
 			
 			if (line.charAt(0) == '>') {
 				if (name.length() > 0) {
-					Sequence s = new Sequence (seq, name, 1, false);
+					Sequence s = new Sequence(seq.toString(), name, 1, false);
 					if (first != null) {
 						last.addAfter(s);
 						last = s;
@@ -463,29 +497,29 @@ public class Sequence {
 					}
 				}
 				
-				line = line.substring(1);
-				seq = "";
+				name = line.substring(1);
+				seq = new StringBuffer();
 				continue;
 			}
 			
-			String checked = "";
+			StringBuffer checked = new StringBuffer();
 			for (int i = 0; i < n - 1; i++) {
 				char c = line.charAt(i);
-				if (isNuc(c))
-					checked = checked + c;
-				else if (!isGap(c)) {
+				if (isNuc(c)) {
+					checked.append(c);
+				} else if (!isGap(c)) {
 					System.err.println("Unrecognized nucleotide " + c + " in file " + file);
-					seq = "";
+					seq = new StringBuffer();
 					name = "";
 				}
 			}
 			
-			seq = seq + checked;
+			seq.append(checked);
 		}
 		in.close();
 		
 		if (name.length() > 0) {
-			Sequence s = new Sequence(seq, name, 1, false);
+			Sequence s = new Sequence(seq.toString(), name, 1, false);
 			if (first != null) {
 				last.addAfter(s);
 				last = s;
@@ -493,7 +527,7 @@ public class Sequence {
 				first = last = s;
 			}
 		}
-		
+		System.out.println("Ending Sequence.parseSequences(" + file + ")");
 		return first;
 	}
 	
